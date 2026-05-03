@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GYMSHARK</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background: #fff; color: #0d0d0d; }
+    img { display: block; width: 100%; object-fit: cover; }
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+
+    /* ── ANNOUNCEMENT BAR ── */
+    .announcement-bar {
+      background: #0d0d0d;
+      color: #fff;
+      text-align: center;
+      padding: 10px 16px;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      font-weight: 500;
+      text-transform: uppercase;
+    }
+
+    /* ── NAVIGATION ── */
+    .nav {
+      background: #0d0d0d;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .nav-inner {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      padding: 0 24px;
+      height: 56px;
+    }
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      align-items: center;
+    }
+    .nav-links a {
+      color: #fff;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .nav-links a:hover { color: #ccc; }
+    .nav-logo {
+      color: #fff;
+      font-size: 20px;
+      font-weight: 900;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      text-align: center;
+    }
+    .nav-icons {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      justify-content: flex-end;
+    }
+    .nav-icons a {
+      color: #fff;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .nav-icons svg { width: 20px; height: 20px; fill: none; stroke: #fff; stroke-width: 1.8; }
+    .hamburger { display: none; background: none; border: none; cursor: pointer; }
+    .hamburger svg { width: 24px; height: 24px; stroke: #fff; stroke-width: 2; }
+
+    /* Mobile nav */
+    .mobile-nav {
+      display: none;
+      background: #0d0d0d;
+      padding: 20px 24px;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .mobile-nav.open { display: flex; }
+    .mobile-nav a {
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding-bottom: 14px;
+      border-bottom: 1px solid #222;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      height: 100vh;
+      min-height: 520px;
+      overflow: hidden;
+    }
+    .hero img {
+      height: 100%;
+      object-position: center top;
+    }
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.45) 100%);
+    }
+    .hero-content {
+      position: absolute;
+      bottom: 60px;
+      left: 60px;
+      color: #fff;
+    }
+    .hero-content h1 {
+      font-size: 64px;
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+    .hero-content p {
+      font-size: 16px;
+      font-weight: 400;
+      margin-bottom: 28px;
+      opacity: 0.9;
+    }
+    .btn-primary {
+      display: inline-block;
+      background: #fff;
+      color: #0d0d0d;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 14px 32px;
+    }
+    .btn-primary:hover { background: #e0e0e0; }
+    .btn-dark {
+      display: inline-block;
+      background: #0d0d0d;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 14px 32px;
+    }
+    .btn-dark:hover { background: #333; }
+
+    /* ── SECTION LABEL ── */
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 40px 24px 20px;
+    }
+    .section-header h2 {
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      text-transform: uppercase;
+    }
+    .section-header a {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    /* ── PRODUCT GRID ── */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2px;
+      padding: 0 24px 40px;
+    }
+    .product-card { cursor: pointer; }
+    .product-card-img {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 3/4;
+      background: #f2f2f2;
+    }
+    .product-card-img img { height: 100%; object-position: center top; transition: transform 0.4s ease; }
+    .product-card:hover .product-card-img img { transform: scale(1.04); }
+    .product-badge {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: #0d0d0d;
+      color: #fff;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 4px 8px;
+    }
+    .product-info { padding: 10px 0 6px; }
+    .product-name {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      margin-bottom: 4px;
+      line-height: 1.3;
+    }
+    .product-colors {
+      font-size: 11px;
+      color: #777;
+      margin-bottom: 4px;
+    }
+    .product-price {
+      font-size: 13px;
+      font-weight: 500;
+      color: #0d0d0d;
+    }
+    .product-price-sale { color: #c00; }
+
+    /* ── STRIP GRID (5 col) ── */
+    .strip-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 2px;
+      padding: 0 24px 40px;
+    }
+    .strip-card { position: relative; cursor: pointer; }
+    .strip-card-img { aspect-ratio: 2/3; overflow: hidden; background: #f2f2f2; }
+    .strip-card-img img { height: 100%; object-position: center top; transition: transform 0.4s ease; }
+    .strip-card:hover .strip-card-img img { transform: scale(1.04); }
+    .strip-card-label {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(255,255,255,0.92);
+      padding: 10px 12px;
+    }
+    .strip-card-label span {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    /* ── EDITORIAL BANNER ── */
+    .editorial-banner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+      padding: 0 24px 40px;
+    }
+    .editorial-card {
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+    .editorial-card img {
+      aspect-ratio: 3/4;
+      object-position: center top;
+      transition: transform 0.4s ease;
+    }
+    .editorial-card:hover img { transform: scale(1.03); }
+    .editorial-card-content {
+      position: absolute;
+      bottom: 32px;
+      left: 28px;
+      color: #fff;
+    }
+    .editorial-card-content h3 {
+      font-size: 26px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: -0.01em;
+      margin-bottom: 14px;
+      line-height: 1.1;
+      text-shadow: 0 1px 8px rgba(0,0,0,0.4);
+    }
+
+    /* ── FULL BANNER ── */
+    .full-banner {
+      position: relative;
+      overflow: hidden;
+      margin: 0 24px 40px;
+    }
+    .full-banner img { aspect-ratio: 16/6; object-position: center; }
+    .full-banner-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.28);
+    }
+    .full-banner-content {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      text-align: center;
+    }
+    .full-banner-content h2 {
+      font-size: 48px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
+      margin-bottom: 18px;
+    }
+
+    /* ── LIFESTYLE 3-GRID ── */
+    .lifestyle-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 2px;
+      padding: 0 24px 40px;
+    }
+    .lifestyle-card { overflow: hidden; position: relative; cursor: pointer; }
+    .lifestyle-card img { height: 100%; min-height: 380px; object-position: center; transition: transform 0.4s ease; }
+    .lifestyle-card:hover img { transform: scale(1.03); }
+    .lifestyle-card-label {
+      position: absolute;
+      bottom: 24px;
+      left: 24px;
+      color: #fff;
+    }
+    .lifestyle-card-label h3 {
+      font-size: 20px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      text-shadow: 0 1px 6px rgba(0,0,0,0.5);
+      margin-bottom: 10px;
+    }
+
+    /* ── FOOTER ── */
+    .footer {
+      background: #0d0d0d;
+      color: #fff;
+      padding: 56px 24px 32px;
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 32px;
+      margin-bottom: 48px;
+    }
+    .footer-col h4 {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+      color: #fff;
+    }
+    .footer-col ul { display: flex; flex-direction: column; gap: 10px; }
+    .footer-col ul li a {
+      font-size: 12px;
+      color: #aaa;
+      font-weight: 400;
+      letter-spacing: 0.02em;
+    }
+    .footer-col ul li a:hover { color: #fff; }
+    .footer-newsletter h4 { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 10px; }
+    .footer-newsletter p { font-size: 12px; color: #aaa; margin-bottom: 16px; line-height: 1.5; }
+    .newsletter-form {
+      display: flex;
+      gap: 0;
+    }
+    .newsletter-form input {
+      flex: 1;
+      background: #1a1a1a;
+      border: 1px solid #333;
+      border-right: none;
+      color: #fff;
+      padding: 12px 14px;
+      font-size: 12px;
+      font-family: inherit;
+      outline: none;
+    }
+    .newsletter-form input::placeholder { color: #666; }
+    .newsletter-form button {
+      background: #fff;
+      color: #0d0d0d;
+      border: none;
+      padding: 12px 18px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .footer-bottom {
+      border-top: 1px solid #222;
+      padding-top: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .footer-bottom-left {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .footer-logo {
+      font-size: 18px;
+      font-weight: 900;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+    .footer-legal {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .footer-legal a { font-size: 11px; color: #666; }
+    .footer-legal a:hover { color: #fff; }
+    .footer-social {
+      display: flex;
+      gap: 14px;
+    }
+    .footer-social a {
+      width: 36px;
+      height: 36px;
+      border: 1px solid #333;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .footer-social svg { width: 16px; height: 16px; fill: #aaa; }
+    .footer-social a:hover { border-color: #fff; }
+    .footer-social a:hover svg { fill: #fff; }
+    .footer-payments {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    .payment-icon {
+      background: #1a1a1a;
+      border: 1px solid #333;
+      border-radius: 4px;
+      padding: 4px 8px;
+      font-size: 10px;
+      color: #888;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1024px) {
+      .product-grid { grid-template-columns: repeat(3, 1fr); }
+      .strip-grid { grid-template-columns: repeat(3, 1fr); }
+      .footer-grid { grid-template-columns: repeat(3, 1fr); }
+      .hero-content h1 { font-size: 48px; }
+      .full-banner-content h2 { font-size: 36px; }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .hamburger { display: block; }
+      .nav-inner { grid-template-columns: auto 1fr auto; }
+      .nav-logo { text-align: left; padding-left: 12px; }
+      .hero-content { left: 24px; bottom: 36px; }
+      .hero-content h1 { font-size: 36px; }
+      .product-grid { grid-template-columns: repeat(2, 1fr); padding: 0 12px 32px; }
+      .strip-grid { grid-template-columns: repeat(2, 1fr); padding: 0 12px 32px; }
+      .editorial-banner { grid-template-columns: 1fr; }
+      .lifestyle-grid { grid-template-columns: 1fr 1fr; }
+      .lifestyle-grid .lifestyle-card:first-child { grid-column: 1 / -1; }
+      .footer-grid { grid-template-columns: repeat(2, 1fr); }
+      .full-banner { margin: 0 12px 32px; }
+      .full-banner-content h2 { font-size: 28px; }
+      .section-header { padding: 28px 12px 14px; }
+    }
+
+    @media (max-width: 480px) {
+      .product-grid { grid-template-columns: repeat(2, 1fr); gap: 1px; padding: 0 8px 24px; }
+      .strip-grid { grid-template-columns: repeat(2, 1fr); padding: 0 8px 24px; }
+      .lifestyle-grid { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr 1fr; gap: 24px; }
+      .hero-content h1 { font-size: 28px; }
+      .editorial-banner { padding: 0 8px 24px; }
+      .footer-bottom { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ANNOUNCEMENT BAR -->
+  <div class="announcement-bar">Free UK Delivery Over £45 | Free Returns | Student Discount Available</div>
+
+  <!-- NAVIGATION -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <div style="display:flex;align-items:center;gap:16px;">
+        <button class="hamburger" id="hamburgerBtn" aria-label="Menu">
+          <svg viewBox="0 0 24 24" fill="none"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+        <ul class="nav-links">
+          <li><a href="#">New In</a></li>
+          <li><a href="#">Women</a></li>
+          <li><a href="#">Men</a></li>
+          <li><a href="#">Accessories</a></li>
+          <li><a href="#">Sport</a></li>
+          <li><a href="#">Sale</a></li>
+        </ul>
+      </div>
+      <a href="#" class="nav-logo">Gymshark</a>
+      <div class="nav-icons">
+        <a href="#">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </a>
+        <a href="#">
+          <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </a>
+        <a href="#">
+          <svg viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        </a>
+      </div>
+    </div>
+    <div class="mobile-nav" id="mobileNav">
+      <a href="#">New In</a>
+      <a href="#">Women</a>
+      <a href="#">Men</a>
+      <a href="#">Accessories</a>
+      <a href="#">Sport</a>
+      <a href="#">Sale</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=1440&q=85&fit=crop" alt="Hero" />
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h1>Reach<br />Your Peak</h1>
+      <p>Performance wear engineered for your next personal best.</p>
+      <a href="#" class="btn-primary">Shop Now</a>
+    </div>
+  </section>
+
+  <!-- PRODUCT SECTION 1 — NEW IN WOMEN'S -->
+  <section>
+    <div class="section-header">
+      <h2>New In — Women's</h2>
+      <a href="#">View All</a>
+    </div>
+    <div class="product-grid">
+      <div class="product-card">
+        <div class="product-card-img">
+          <img src="https://images.unsplash.com/photo-1506629082955-511b1aa562c8?w=600&q=80&fit=crop" alt="Sports Bra" />
+          <span class="product-badge">New</span>
+        </div>
+        <div class="product-info">
+          <div class="product-name">Adapt Animal Seamless Sports Bra</div>
+          <div class="product-colors">6 colours</div>
+          <div class="product-price">£30.00</div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-card-img">
+          <img src="https://images.unsplash.com/photo-1518611012118-696072aa579a?w=600&q=80&fit=crop" alt="Leggings" />
+          <span class="product-badge">New</span>
+        </div>
+        <div class="product-info">
+          <div class="product-name">Flex Essential High Waisted Leggings</div>
+          <div class="product-colors">8 colours</div>
+          <div class="product-price">£50.00</div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-card-img">
+          <img src="https://images.unsplash.com/photo-1545205597-3d9d02c29597?w=600&q=80&fit=crop" alt="Crop Top" />
+        </div>
+        <div class="product-info">
+          <div class="product-name">Training Cropped Tank Top</div>
+          <div class="product-colors">5 colours</div>
+          <div class="product-price">£25.00</div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-card-img">
+          <img src="https://images.unsplash.com/photo-1584464491033-06628f3a6b7b?w=600&q=80&fit=crop" alt="Shorts" />
+          <span class="product-badge">Best Seller</span>
+        </div>
+        <div class="product-info">
+          <div class="product-name">Vital Seamless 2.0 Shorts</div>
+          <div class="product-colors">7 colours</div>
+          <div class="product-price">£35.00</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STRIP — SHOP BY COLLECTION -->
+  <section>
+    <div class="section-header">
+      <h2>Shop by Collection</h2>
+      <a href="#">View All</a>
+    </div>
+    <div class="strip-grid">
+      <div class="strip-card">
+        <div class="strip-card-img">
+          <img src="https://images.unsplash.com/photo-1601422407692-ec4eeec1d9b3?w=400&q=80&fit=crop" alt="Adapt" />
+        </div>
+        <div class="strip-card-label"><span>Adapt</span></div>
+      </div>
+      <div class="strip-card">
+        <div class="strip-card-img">
+          <img src="https://images.unsplash.com/photo-1616803689943-5601631c7fec?w=400&q=80&fit=crop" alt="Flex" />
+        </div>
+        <div class="strip-card-label"><span>Flex Essentials</span></div>
+      </div>
+      <div class="strip-card">
+        <div class="strip-card-img">
+          <img src="https://images.unsplash.com/photo-1576678927484-cc907957088c?w=400&q=80&fit=crop" alt="Vital" />
+        </div>
+        <div class="strip-card-label"><span>Vital Seamless</span></div>
+      </div>
+      <div class="strip-card">
+        <div class="strip-card-img">
+          <img src="https://images.unsplash.com/photo-1540497077202-7c8a3999166f?w=400&q=80&fit=crop" alt="Sport" />
+        </div>
+        <div class="strip-card-label"><span>Sport</span></div>
+      </div>
+      <div class="strip-card">
+        <div class="strip-card-img">
+          <img src="https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=400&q=80&fit=crop" alt="Training" />
+        </div>
+        <div class="strip-card-label"><span>Training</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRODUCT SECTION 2 — NEW IN MEN'S -->
+  <section>
+    <div class="section-header">
+      <h2>New In — Men's</h2>
+      <a href="#">View All</a>
+    </div>
+    <div class="product-grid">
+      <div class="product-card">
+        <div class="product-card-img">
+          <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=600&q=80&fit=crop" alt="Men Shorts" />
+          <span class="product-badge">New</span>
+        </div>
+        <div class="product-info">
+          <div class="product-name">Sport 5" Shorts</div>
+          <div class="product-colors">5 colours</div>
+          <div class="product-price">£35.00</div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-card-img">
+          <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=600&q=80&fit=crop" alt="Men Tee" />
+        </div>
+        <div class="product-info">
+          <div class="product-name">Crest Oversized T-Shirt</div>
+          <div class="product-colors">6 colours</div>
+          <div class="product-price">£30.00</div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-card-img">
+          <img src="https://images.unsplash.com/photo-1614680376593-902f74cf0d41?w=600&q=80&fit=crop" alt="Men Joggers" />
+          <span class="product-badge">Best Seller</span>
+        </div>
+        <div class="product-info">
+          <div class="product-name">Rest Day Joggers</div>
+          <div class="product-colors">4 colours</div>
+          <div class="product-price">£50.00</div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-card-img">
+          <img src="https://images.unsplash.com/photo-1552674605-db6ffd4facb5?w=600&q=80&fit=crop" alt="Men Tank" />
+        </div>
+        <div class="product-info">
+          <div class="product-name">Arrival Sleeveless Hoodie</div>
+          <div class="product-colors">3 colours</div>
+          <div class="product-price">£40.00</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EDITORIAL SPLIT BANNER -->
+  <section>
+    <div class="section-header">
+      <h2>Explore</h2>
+    </div>
+    <div class="editorial-banner" style="padding:0 24px 40px;">
+      <div class="editorial-card">
+        <img src="https://images.unsplash.com/photo-1549476464-37392f717541?w=800&q=85&fit=crop" alt="Women's Collection" />
+        <div style="position:absolute;inset:0;background:rgba(0,0,0,0.3);"></div>
+        <div class="editorial-card-content">
+          <h3>Women's<br />Collection</h3>
+          <a href="#" class="btn-primary">Shop Women</a>
+        </div>
+      </div>
+      <div class="editorial-card">
+        <img src="https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=800&q=85&fit=crop" alt="Men's Collection" />
+        <div style="position:absolute;inset:0;background:rgba(0,0,0,0.3);"></div>
+        <div class="editorial-card-content">
+          <h3>Men's<br />Collection</h3>
+          <a href="#" class="btn-primary">Shop Men</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FULL BANNER — SALE -->
+  <div class="full-banner">
+    <img src="https://images.unsplash.com/photo-1605296867304-46d5465a13f1?w=1440&q=85&fit=crop" alt="Sale Banner" />
+    <div class="full-banner-overlay"></div>
+    <div class="full-banner-content">
+      <h2>Up to 60% Off</h2>
+      <p style="font-size:15px;color:rgba(255,255,255,0.85);margin-bottom:24px;letter-spacing:0.05em;">Limited time. While stocks last.</p>
+      <a href="#" class="btn-primary">Shop Sale</a>
+    </div>
+  </div>
+
+  <!-- PRODUCT SECTION 3 — WOMEN'S BESTSELLERS -->
+  <section>
+    <div class="section-header">
+      <h2>Women's Bestsellers</h2>
+      <a href="#">View All</a>
+    </div>
+    <div class="product-grid">
+      <div class="product-card">
+        <div class="product-card-img">
+          <img src="https://images.unsplash.com/photo-1520013817300-1f4c1cb245ef?w=600&q=80&fit=crop" alt="Set" />
+          <span class="product-badge">Best Seller</span>
+        </div>
+        <div class="product-info">
+          <div class="product-name">Flex Essential Matching Set</div>
+          <div class="product-colors">5 colours</div>
+          <div class="product-price product-price-sale">£65.00 <span style="color:#999;text-decoration:line-through;font-size:12px;">£80.00</span></div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-card-img">
+          <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=600&q=80&fit=crop" alt="Hoodie" />
+        </div>
+        <div class="product-info">
+          <div class="product-name">Rest Day Cropped Hoodie</div>
+          <div class="product-colors">7 colours</div>
+          <div class="product-price">£55.00</div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-card-img">
+          <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80&fit=crop" alt="Bike Shorts" />
+          <span class="product-badge">New</span>
+        </div>
+        <div class="product-info">
+          <div class="product-name">Adapt Animal Seamless Bike Shorts</div>
+          <div class="product-colors">4 colours</div>
+          <div class="product-price">£38.00</div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-card-img">
+          <img src="https://images.unsplash.com/photo-1595078475328-1ab05d0a6a0e?w=600&q=80&fit=crop" alt="Sweatshirt" />
+        </div>
+        <div class="product-info">
+          <div class="product-name">Crest Sweatshirt</div>
+          <div class="product-colors">6 colours</div>
+          <div class="product-price">£45.00</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LIFESTYLE 3-GRID -->
+  <section>
+    <div class="section-header">
+      <h2>The Gymshark Edit</h2>
+      <a href="#">Discover More</a>
+    </div>
+    <div class="lifestyle-grid" style="padding:0 24px 40px;">
+      <div class="lifestyle-card">
+        <img src="https://images.unsplash.com/photo-1574680096145-d05b474e2155?w=900&q=85&fit=crop" alt="Lifestyle 1" />
+        <div class="lifestyle-card-label">
+          <h3>Train Hard,<br />Look Good</h3>
+          <a href="#" class="btn-primary" style="font-size:11px;padding:10px 22px;">Shop Now</a>
+        </div>
+      </div>
+      <div class="lifestyle-card">
+        <img src="https://images.unsplash.com/photo-1518310383802-640c2de311b2?w=600&q=85&fit=crop" alt="Lifestyle 2" />
+        <div class="lifestyle-card-label">
+          <h3>Women's Gym</h3>
+          <a href="#" class="btn-primary" style="font-size:11px;padding:10px 22px;">Shop Women</a>
+        </div>
+      </div>
+      <div class="lifestyle-card">
+        <img src="https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?w=600&q=85&fit=crop" alt="Lifestyle 3" />
+        <div class="lifestyle-card-label">
+          <h3>Men's Gym</h3>
+          <a href="#" class="btn-primary" style="font-size:11px;padding:10px 22px;">Shop Men</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h4>Women's Clothes &amp; Gym Clothing</h4>
+        <ul>
+          <li><a href="#">Sports Bras</a></li>
+          <li><a href="#">Leggings</a></li>
+          <li><a href="#">Shorts</a></li>
+          <li><a href="#">Crop Tops</a></li>
+          <li><a href="#">Hoodies &amp; Sweatshirts</a></li>
+          <li><a href="#">T-Shirts &amp; Vests</a></li>
+          <li><a href="#">Joggers &amp; Sweatpants</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Men's Clothes &amp; Gym Clothing</h4>
+        <ul>
+          <li><a href="#">T-Shirts &amp; Vests</a></li>
+          <li><a href="#">Shorts</a></li>
+          <li><a href="#">Joggers</a></li>
+          <li><a href="#">Hoodies &amp; Sweatshirts</a></li>
+          <li><a href="#">Leggings &amp; Tights</a></li>
+          <li><a href="#">Jackets &amp; Gilets</a></li>
+          <li><a href="#">Accessories</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Customer Service</h4>
+        <ul>
+          <li><a href="#">Contact Us</a></li>
+          <li><a href="#">Returns Policy</a></li>
+          <li><a href="#">Delivery Information</a></li>
+          <li><a href="#">FAQs</a></li>
+          <li><a href="#">Size Guide</a></li>
+          <li><a href="#">Track My Order</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>About Gymshark</h4>
+        <ul>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Investors</a></li>
+          <li><a href="#">Sustainability</a></li>
+          <li><a href="#">Press</a></li>
+          <li><a href="#">Student Discount</a></li>
+        </ul>
+      </div>
+      <div class="footer-col footer-newsletter">
+        <h4>Stay in the know</h4>
+        <p>Be the first to know about new drops, exclusive offers and more.</p>
+        <div class="newsletter-form">
+          <input type="email" placeholder="Your email address" />
+          <button type="submit">Join</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="footer-bottom-left">
+        <span class="footer-logo">Gymshark</span>
+        <div class="footer-legal">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Cookie Policy</a>
+          <a href="#">Terms &amp; Conditions</a>
+          <a href="#">Accessibility</a>
+          <a href="#">© 2024 Gymshark. All rights reserved.</a>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px;align-items:flex-end;">
+        <div class="footer-social">
+          <!-- Instagram -->
+          <a href="#">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          </a>
+          <!-- TikTok -->
+          <a href="#">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+          </a>
+          <!-- YouTube -->
+          <a href="#">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg>
+          </a>
+          <!-- Facebook -->
+          <a href="#">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          </a>
+        </div>
+        <div class="footer-payments">
+          <span class="payment-icon">VISA</span>
+          <span class="payment-icon">MC</span>
+          <span class="payment-icon">AMEX</span>
+          <span class="payment-icon">PayPal</span>
+          <span class="payment-icon">Klarna</span>
+          <span class="payment-icon">Apple Pay</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const btn = document.getElementById('hamburgerBtn');
+    const nav = document.getElementById('mobileNav');
+    btn.addEventListener('click', () => nav.classList.toggle('open'));
+  </script>
+</body>
+</html>
